@@ -1,0 +1,630 @@
+---
+title: "Intro Markdown"
+author: "Lilly Sencenbaugh"
+date: "8/17/2023"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+ 
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can knit to a word document, pdf, or html. You can embed an R code chunk like this:
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+The data 'pressure' and 'cars' are built in data sets in R. They are good for practicing when you don't have your own data to use. There are some plant data sets and other ecology related sets. There are many fun data sets too, including one on hamster tooth length!
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# The "#" sign, now denotes bold text if we decided to knit this markdown.
+### If you add more # it progressively makes the text smaller
+
+### Click on "Outline" in upper right corner. You should see an outline of the whole document
+
+Unlike "normal" R script, you can type without using # to separate text from code. This is one advantage of markdown. Only code/text written in chunks is treated as code. 
+
+Also, check out the numbers to the left! This tracks the numbers of your lines. This is super helpful in classes where you follow along. Check line 630!!
+
+```{r}
+#for example, this is how you would make notes, and denote text in the standard R script, still possible in markdown, but having "chunks" that separate text from code, makes organization cleaner, and helps make everything more digestible.
+```
+
+Tip: Make a typo? There is a spell check button near the top (green check mark a,b,c) that will highlight all spelling errors for you to fix.  Magnifying glass next to that button is for searching the document. 
+
+# Basic Functions/commands
+
+How to make a chunk:
+1. click green +c button near top right of work space, select 'R'
+2. type it out! 
+```{r Chunk Name, echo=FALSE}
+
+```
+
+You can name each chunk and alter settings by typing directly into the brackets {r}. The button directly to the right runs all previous chunks, the next button to the right runs this chunk. 
+
+R can be used in its basic form as a calculator. Running a line of code like the ones below, you'll notice an immediate print-out below the code chunk.You have the option to run single lines within a chunk, and work step-wise like you might in standard R script. You can also run the entire chunk in one go. 
+```{r}
+1+1
+12*12
+2^3
+sqrt(16)
+# 1 through 10
+1:10
+```
+
+The sequence function is a nice time saver. 
+seq(beginning number, end number, count by this interval)
+```{r}
+seq(2,12,2)
+rep(7,3)
+rep("six",6)
+```
+
+Notice that each previous command is over-written when you run a single line at a time, but when you run the entire chunk, each lines out-put is preserved. Also a neat function of Markdown. 
+
+
+Within R Markdown, you can also write math with symbols using Latex! in the code it looks strange, but when you knit it looks correct. There are many online cheat sheets to help know the appropriate way to write things out. 
+
+$$H_0: \mu_A = \mu_B$$
+$$H_A: \mu_A \neq \mu_B$$
+$$ \alpha A \beta B \gamma \Gamma \delta \Delta \epsilon \varepsilon E \pi \sigma \Phi  \infty \square \cdot \geq \cong \perp$$
+
+I find this useful when writing out hypotheses!
+
+
+In the chunk below, we now assign (<-) the same command 1+1 to the actual word "Two". Running the first line appears to do nothing. But if you look in the upper right hand corner, the Global Environment, you'll see the item "Two" and its attached value. This is an important step to understand for the basis of most R code. 
+
+The second line when run alone now gives you the value assigned to "Two". In this basic example it may not seem like much of a time savings, but as you build more complicated commands, assigning a name to a function such as 1+1 becomes crucial to organization and sanity. A good rule is if you have to type something out more than 10 times, give it a name or make it a function. 
+```{r}
+Two<-1+1    
+Two
+```
+
+
+### Set working Directory and Import Dataset, using "Import Dataset" button or the following code.
+
+The first step to working with your data is to set the working directory. This tells R what file to look in when you ask it to open a document, or save your markdown file or figures etc.
+
+THIS IS VERY IMPORTANT. YOU NEED TO HAVE THE CORRECT WORKING DIRECTORY INDICATED EVERY SINGLE TIME YOU USE R WITH YOUR FILES. THIS IS STEP 1.
+
+Set the working directory by clicking the "Session" button on the very top menu bar. Then click set working directory, next you'll have a couple options: To Source File Location or Choose directory. The foolproof way to do this is to always choose the directory at the beginning of each session. Ideally you have a file created such as "Biodiversity 410/510" or some relevant file for your research. This should also be the same file where your data (excel data sheet or .txt file) are stored. 
+
+You can also have it typed in code. I copy/paste this into the beginning of EVERY R Markdown I make. 
+
+```{r}
+#mine, for example
+#setwd("~/research related/extra files for experiments")
+```
+
+The library() function is loading/finding a specific "package" w/in R studio called "readxl". Not every function or package is loaded within R. You often need to load packages, even if it's the same one every time you open your file in R and begin work each session. 
+
+Tip: You should cite the packages you use for your data analysis! You can do this by typing citation(package name). Generally you don't cite packages like readxl or base r. If you use a built in dataset or a specific package for special figures or data analysis, you definitely need to cite it. 
+
+```{r}
+library(readxl)
+citation("readxl")
+```
+
+In the following chunk, we use the read_excel() function to open the Excel file called "ExampleCoverData" which I have created as an example. After the file is read in, the View() command,will open the imported version of the excel sheet. This is a good time to make sure everything imported correctly, using the View() command. 
+
+*For the sake of clarity I named the data ExampleCoverData, but it typically is more efficient to name it something shorter, as I did in the second line of code. 
+
+```{r}
+ExampleCoverData <- read_excel("ExampleCoverData.xlsx")
+covdat<-ExampleCoverData
+View(covdat)
+head(covdat)
+```
+
+As with most things in R, there is always an easier way, or at least a different way. R studio has a button in the upper right hand corner, when the Environment tab is selected, you'll see a button with a drop down arrow called "Import Dataset". This allows you to select 1) Which file type you would like to import, and then browse your computer for the file to select manually. Try it, and you'll see that for excel files it runs the exact same three lines by default that we just covered in the two chunks above. 
+
+This is also a good time to talk about cleaning the "workspace". As you import data, create more objects, you'll start to see more items populate the values under the global environment in the upper right hand pane of your viewer. Sometimes we create things with the same name, or repeat steps in separate files, and R can get confused. Often times its because the global environment/workspace has too much open, or identical items and R uses 1) the wrong one or 2) won't run the code you want. It's always good practice to clear the working environment at the beginning of each session. You can do this by clicking the broom in the upper right hand corner, to the right of the import dataset button you found earlier. Notice how the object "Two" and "Example CoverData that we created earlier have now been erased? 
+
+```{r}
+Two
+ExampleCoverData
+```
+
+Obviously, we would like to keep our ExampleCoverData file, so scroll back up to the chunk, where we read the file in and run it again. 
+
+
+### Investigating Data
+
+Rename the data to something simpler...then run a few commands to quickly check things look right, this is most helpful for large data sets where it may not be feasible to examine manually using the View() function like before. Additionally, when we run the entire chunk instead of creating an extensive list, R creates three "windows/panes" in the output box that you can toggle through. They are listed in order from left (first command) to right (last command). If this is confusing, you can run each line by itself. 
+
+```{r}
+Veg<-ExampleCoverData
+
+#Top rows
+head(Veg)
+
+#Bottom Rows
+tail(Veg)
+
+#Dimensions of the "data"
+dim(Veg)
+
+#names, gives column names
+names(Veg)
+
+#summary gives 5 number summary for each variable
+summary(Veg)
+```
+
+Isolating data, check the data sheet to make sense of what each variation is calling out. Useful to think of as coordinates on your spread sheet.If you know a row or column may be of concern or a specific observation this is helpful. You can view the data using the View() command, and verify which row and column you want. 
+
+```{r}
+Veg[1,1]
+Veg[2,3]
+Veg[4,] #entire fourth row
+Veg[,5] #entire fifth column
+```
+
+"Extracting" data from within your data sheet, think of it as "cut" and "paste" into a different Excel sheet/file,or isolating it. The $ symbol tells R to look within the data set for whatever character follows, for example...
+Veg is the data, and Species is a column within the Veg data. 
+
+```{r}
+head(Veg)
+Veg$Species
+```
+
+Now creating the object "Species" with the unique values of all the Species from the Veg data. Now species is a separate "object", see it in the Global Environment in the upper right hand panel?
+
+```{r}
+Species<-Veg$Species
+View(Species)
+#or
+head(Species)
+```
+
+Data types...
+Summary(), will give you a 5 number summary for numeric values, and character for categorical data such as treatment or species. class(Veg) returns three types. 
+
+```{r}
+summary(Veg)
+```
+
+```{r}
+class(Veg) #type of data frame
+class(Veg$Cover) # type variable
+class(Veg$Species)
+```
+
+R doesn't recognize the "character" class as a variable. Statistically speaking the Species and Treatment variables are categorical. For R to "see" them, we must change them into factors. Use the as.factor(data$variable) function.We use the class () function again to check that the as.factor() function changed the class from character to class. 
+ 
+```{r}
+Veg$Species<-as.factor(Veg$Species)
+class(Veg$Species)
+```
+
+Species is now recognized as a factor/category for each species present.
+
+Same process for Treatment
+```{r}
+Veg$Treatment<-as.factor(Veg$Treatment)
+class(Veg$Treatment)
+```
+
+Modifying data. Allows you to rename your columns with more meaningful or easier titles. 
+```{r}
+names(Veg)
+```
+
+```{r}
+names(Veg) <- c("Region","Point","Treatment","Common Name","Biomass","Distance From Trail")
+names(Veg)
+head(Veg)
+```
+
+Now let's go backwards
+```{r}
+names(Veg)<-c("Site","Frame","Treatment","Species","Cover","DistFromRoad")
+head(Veg)
+```
+
+Functions, Average and Standard Deviation (sd)
+```{r}
+mean(Veg$Cover)
+sd(Veg$Cover)
+```
+
+### Subsetting
+Subsetting is a useful tool to isolate specific portions of your data for analysis. You'll use this function in future homework (and if you're like me... all your data analysis!!). 
+
+Subset function: subset(data.frame,data.frame$column header=="item withing given column to isolate"). We are asking R to return us all the data associated with the species Dandelion. 
+```{r}
+subset(Veg,Veg$Species=="Dandelion")
+```
+
+What if we want to analyze just the Dandelion data? First subset just Dandelion within the Species variable. We could do this for any of the columns in the data frame. 
+
+```{r}
+Dandelion<-subset(Veg,Veg$Species=="Dandelion")
+```
+
+Because we assigned (<-) the subset to a new data frame we are calling "Dandelion", we can now use similar commands as before.
+
+```{r}
+mean(Dandelion$Cover)
+sd(Dandelion$Cover)
+mean(Dandelion$DistFromRoad)
+sd(Dandelion$DistFromRoad)
+```
+
+Subsetting by treatment...same procedure but now isolating only the observations for the the Treatment, Control. Toggle between the Dandelion, Control, and Veg data frames to see how the subsetting isolated each. 
+
+```{r}
+Control<- subset(Veg,Veg$Treatment=="Control")
+Control
+```
+
+```{r}
+sd(Control$Cover)
+mean(Control$Cover)
+```
+
+```{r}
+View(Veg)
+View(Control)
+View(Dandelion)
+```
+
+As with most things, there are other ways to isolate variables without using the subset function. That said, I think for now stick with this method as it is rather intuitive. However, the other methods can be useful in other ways.......so consider learning new strategies as you grow in coding confidence!
+
+
+# Statistics!
+
+R is great for statistics. This class will give you tons of tools to use for your current and future projects. Remember, code we give you in class can be used as a guideline, but you should do analysis appropriate for your own project. Another note: Lisa, Colter, Erin, and I are not statisticians BUT we (Lisa especially!!) have experience using statistics for analyzing biological data. Statistics is all about data, so analysis of different types of data will vary, especially among fields of study, but a lot of the basic rules will apply across the board. Being a good scientist (and member of society imho) means having a basic understanding of statistics...so let's get started!!!
+
+
+linear model is: lm(), lm(Response Variable~Explanatory Variable,data= data.frame)
+
+What is a linear model?? Won't go too deep here, but basically y=mx+b. It describes the relationship between X and Y (predictor and response) along a linear path. You can use them to make predictions. 
+
+linear model for Treatment
+```{r}
+TreatMod<-lm(Cover~Treatment,data = Veg)
+```
+
+Ok, you made a model. How do we get info from it? The summary output! 
+```{r}
+summary(TreatMod)
+```
+
+YIKES! That's a mess. What does it all mean? Coefficients are the items in the model. Here that is "Treatment." The Estimate indicates the change in the mean response based in a change in that item. The next column is the standard error. Next is the t value, something you don't need to worry about for our purposes. The final column is the p value. The *** indicate the level of significance as defined at the bottom of the output. Many statistics professors have you disable this part of the output. The bottom of the output then shows information important to the overall model that I won't go into right now. 
+
+
+
+Anova= Analysis of Variance, looks for at least a single difference between treatments. In other words only one treatment needs to differ, but not all of them.
+```{r}
+anova(TreatMod)
+```
+
+### linear model for non-categorical explanatory variable
+
+confint() returns the confidence interval, 95% by default
+summary() provides the model summary
+We see here that there is strong evidence to support the hypothesis that distance from road results in a change in percent cover. 
+
+```{r}
+DistMod<-lm(Cover~DistFromRoad,data=Veg)
+summary(DistMod)
+confint(DistMod)
+```
+
+
+### Interpreting the output
+
+This can be challenging, but it is an important skill! In your results, you should state the result with NO interpretation and a p value. In some contexts you should also list the confidence interval. Sometimes you need to transform the numbers in the output so that they are an easier to understand value-- not something you need to worry about now. Your statistics classes will go into further detail about how to do this, for now consider the following examples.  
+
+For our treatment data:
+We strong evidence of a decrease in cover in the herbicide treatment (p<0.01) relative to the untreated control. We did not find evidence of a difference in cover in the seeded treatment (p>0.05). 
+
+For our distance data:
+We found strong evidence of a decrease in cover as distance from the road increased (p<0.01). 
+
+### Data Visualization
+
+plot(model.name) returns a full statistical suite of diagnostic plots.
+
+These are important for statistical analysis...but I'm not going to go too far into them here. 
+```{r}
+plot(TreatMod)
+```
+
+The following chunk is telling R: Plot Treatment on the X-axis, Cover on the Y-axis, the xlab and ylab are both label names that we can 
+define however we see fit, and main is the title name. 
+
+```{r}
+plot(Veg$Treatment,Veg$Cover, xlab="Treatment",ylab="% Cover",main="Treatment Effect")
+```
+
+#### more plots using abline() to produce line of fit from regression
+
+plot(explanatory,response) provides the initial figure
+and abline(model.name) fits a line of best fit from the model we created in the chunk above.You have to run these to lines at the same time in order for the line to show up on the plot. 
+
+```{r}
+plot(Veg$DistFromRoad,Veg$Cover)
+```
+```{r}
+plot(Veg$DistFromRoad,Veg$Cover)
+abline(DistMod)
+```
+
+#### more figures!
+ggplot may seem more confusing at first, but once you get the basics it builds much nicer plots than the default ones from R.
+There are a few ways to install packages. You can click the "Packages" tab in the top of the bottom right "box". Then click "install". A pop up menu will propagate, type in the package name in the "Packages" field (middle box), then click install. 
+Or use the code in the chunk below, if you wanted a different package, you would just type it in "" where "ggplot2" is.
+
+```{r}
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+Like the readxl() function we used at the very beginning, even if the package is installed to your library, you still need to tell R to open it using the library function. 
+
+```{r}
+trtfig<-ggplot(Veg,aes(x=Treatment,y=Cover,fill=Treatment))+
+  geom_boxplot()+
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.3)+
+  labs(caption="% Cover given Treatment",x="Treatment",y="% Cover")
+trtfig
+
+distfig<-ggplot(Veg,aes(x=DistFromRoad,y=Cover,color=Treatment))+
+  geom_point()+
+  stat_smooth(method="lm",col="red")+
+  labs(caption="% Cover given distance from road",x="Distance from road (m)",y="% Cover")
+distfig
+```
+
+If you want to attempt ggplot2... let me know! I'm a big ggplot2 nerd, and would be glad to help!
+
+
+# Parking Lot Experiment
+And now for the parking lot data!
+
+First of all, let's talk about wide vs long data. 
+Wide data is generally what you'll use for analysis. In wide data each variable (or attribute) has its own column, and it'll be *literally wide*. In long, each data point has as many rows as number of attributes and then a separate value column. 
+In the excel files we have an example of wide vs long for our car data. 
+
+### Load the data
+
+If we were starting over completely from scratch... what should your first step be?
+```{r}
+parkinglot <- read_excel("parkinglot2023.xlsx")
+View(parkinglot)
+head(parkinglot)
+```
+
+Is this long or wide?
+
+
+### Investigating Data
+
+```{r set up the data}
+parkinglot
+
+#Top rows
+head(parkinglot)
+
+#Bottom Rows
+tail(parkinglot)
+
+#Dimensions of the "data"
+dim(parkinglot)
+
+#names, gives column names
+names(parkinglot)
+
+#summary gives 5 number summary for each variable
+summary(parkinglot)
+```
+
+
+```{r}
+parkinglot[1,1]
+parkinglot[2,3]
+parkinglot[3,] #entire fourth row
+parkinglot[,3] #entire third column
+```
+
+
+Sometimes in R we want to combine two categorical variables into one combined variable. This is called 'flattening' and can be done with ease using the 'interaction' function! Below we will combine the variables 'Make' and 'Type' to make a new variable called 'Species'. 
+
+```{r}
+parkinglot$Species<-interaction(parkinglot$Make,parkinglot$Type)
+```
+
+All of the categorical variables
+```{r}
+Species<-parkinglot$Species
+parkinglot$Species<-as.factor(parkinglot$Species)
+Make<-parkinglot$Make
+parkinglot$Make<-as.factor(parkinglot$Make)
+Type<-parkinglot$Type
+parkinglot$Type<-as.factor(parkinglot$Type)
+Lot<-parkinglot$Lot
+parkinglot$Lot<-as.factor(parkinglot$Lot)
+```
+
+Functions, Average and Standard Deviation (sd)
+```{r}
+mean(parkinglot$Abundance)
+sd(parkinglot$Abundance)
+```
+
+### Subsetting
+
+What should we subset? Firstly, we should isolate the two lot types so we can see how many cars are in each lot. We can also isolate by make, type, or "species"
+```{r}
+Expensive<-subset(parkinglot,parkinglot$Lot=='W')
+Inexpensive<-subset(parkinglot,parkinglot$Lot=='B')
+
+sum(Expensive$Abundance)
+# 252 cars in the expensive lot!
+sum(Inexpensive$Abundance)
+# 395 cars in the inexpensive lot!
+
+Subaru<-subset(parkinglot,parkinglot$Make=="Subaru")
+sum(Subaru$Abundance)
+# 102 subarus in both lots
+
+HondaSUV<-subset(parkinglot,parkinglot$Species=="Honda.SUV")
+sum(HondaSUV$Abundance)
+# 42 honda suvs
+
+```
+
+### Analysis!
+
+For the analysis I need the data in the wide format. To do this, I'll be importing the wide version.  If you know of a better way to do this that doesn't require a second excel sheet or complicated functions-- let me know. 
+
+Also, we will be using a .csv file rather than a .xlsx file. This is due to the way they import into R. I would almost always recommend a .csv over .xlsx because its default structures are what we want for this type of analysis. To upload a .csv, we need to install the package "readr". 
+
+```{r}
+install.packages("readr")
+library("readr")
+
+parkinglotwide <- read.csv("parkinglot2023.csv")
+head(parkinglotwide)
+
+parking<- as.data.frame(parkinglotwide)
+parking$Lot<-as.factor(parking$Lot)
+Lot<-parking$Lot
+Make<-parking$Make
+parking$Make<-as.factor(parking$Make)
+Model<-parking$Model
+parking$Type<-as.factor(parking$Type)
+Type<-parking$Type
+
+str(parking)
+```
+
+
+When I analyze this type of data, I like to look at richness first.
+```{r}
+#isolate the abiotic environmental data
+#environment
+env<-parking[,1:4] 
+#isolate the species
+car<-parking[,5:47]
+
+#richness
+dim(car)
+#richness is 42 species!
+rich<-rowSums(sign(car))
+```
+
+rowSums() , sums everything in the row, and the sign(car) -  within that function - is changing the abundance/percent cover to simple presence absence, so if there is a number, regardless of value then the sign() assigns it a 1, and then the rowSums() function adds all those ones up. This gives you the total species richness.
+
+Richness figures
+```{r}
+boxplot(rich~env$Lot) 
+
+richplot<-ggplot(car,aes(x=Lot,y=rich,fill=Lot))+
+  geom_boxplot()+geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.3)+
+  labs(caption="Richness Among Herbicide Treatments",x="Herbicide Treatment",y="Mean Species Richness")
+
+richplot
+```
+
+Tip: Want fun colored plots???? See the "Colors in R" doc on D2L or just google colors in R! GGplot has its own color palettes including an entire set based on Wes Anderson films. 
+
+Test if significant differences in richness using a general linear model. These are discrete values (you can't have half a species!), so we need to us a poisson regression. 
+```{r}
+rmod<-glm(rich~env$Lot,'poisson') 
+summary(rmod)
+```
+
+```{r}
+anova(rmod,test='Chi') 
+```
+
+There is no evidence of an impact on lot price on richness (p=0.9226). 
+
+Diagnostic plots
+```{r}
+plot(rmod)
+```
+Why does our data look weird? Too many 0s! 
+
+
+Rank abundance
+What is rank abundance and why does it matter? I LOVE LOOKING AT RANK ABUNDANCE! This tells you which species are most abundant in your community and whether it is being dominated by a single species or if there is evenness. 
+```{r}
+tcov.inex<-apply(inex,2,sum) 
+tcov.expe<-apply(expe,2,sum)
+
+# the top 3 species in the inexpensive lot are:
+# 3. Honda SUV (30 individuals)
+# 2. Toyota SUV(38 individuals)
+# 1. Subaru SUV (40 individuals)
+# the top 3 species in the expensive lot are:
+# 3. Toyota Sedan (30 individuals)
+# 2. Subaru SUV (38 individuals)
+# 1. Toyota SUV (40 individuals)
+
+# funny that they all had the same counts! This doesn't normally happen in field data
+# also interesting that the top 2 species were the same in both but flipped!
+
+
+plot(seq(1:length(tcov.inex)),sort(tcov.inex,decreasing=T),col='goldenrod1',pch=17,xlab="Species Rank",ylab="Relative Abundance")
+points(seq(1:length(tcov.expe)),sort(tcov.expe,decreasing=T),col='deeppink',pch=19)
+legend(30,40, legend=c("Inexpensive", "Expensive"),
+       col=c("goldenrod1", "deeppink"),pch=c(17,19),cex=0.8)
+```
+
+
+We can compare any given car between lot types. Here is the most popular car in the inexpensive lot, the subaru suv. 
+```{r}
+Subarusuv<-ggplot(car,aes(x=Lot,y=SubaruSUV,fill=Lot))+
+  geom_col()+
+  scale_fill_brewer(palette="Accent")+
+  labs(caption="Subaru SUV",x="Lot",y="Number of Subaru SUVs")
+# here I used a default ggplot2 color palette called "Accent"
+Subarusuv
+
+```
+
+
+We can use a package BiodiversityR to calculate diversity, but to learn what we're doing, lets calculate the alpha diversity within lot types at the Species level. 
+
+Here we're doing the Shannon-Weiner Index. Why?
+```{r}
+InexH<--sum(((3/246)*log(3/246))+((7/246)*log(7/246))+((13/246)*log(13/246))+((8/246)*log(8/246))+((8/246)*log(8/246))+((1/246)*log(1/246))+((4/246)*log(4/246))+((9/246)*log(9/246))+((5/246)*log(5/246))+((7/246)*log(7/246))+((1/246)*log(1/246))+((8/246)*log(8/246))+((30/246)*log(30/246))+((3/246)*log(3/246))+((4/246)*log(4/246))+((19/246)*log(19/246))+((4/246)*log(4/246))+((3/246)*log(3/246))+((5/246)*log(5/246))+((3/246)*log(3/246))+((1/246)*log(1/246))+((4/246)*log(4/246))+((4/246)*log(4/246))+((40/246)*log(40/246))+((38/246)*log(38/246))+((6/246)*log(6+((4/246)*log(4/246))/246))+((4/246)*log(4/246)))
+
+
+ExpH<--sum(((1/358)*log(1/358))+((2/358)*log(2/358))+((2/358)*log(2/358))+((1/358)*log(1/358))+((2/358)*log(2/358))+((2/358)*log(2/358))+((8/358)*log(8/358))+((9/358)*log(9/358))+((17/358)*log(17/358))+((1/358)*log(1/358))+((6/358)*log(6/358))+((9/358)*log(9/358))+((16/358)*log(16/358))+((20/358)*log(20/358))+((15/358)*log(15/358))+((1/358)*log(1/358))+((8/358)*log(8/358))+((17/358)*log(17/358))+((18/358)*log(18/358))+((12/358)*log(12/358))+((5/358)*log(5/358))+((3/358)*log(3/358))+((1/358)*log(1/358))+((20/358)*log(20/358))+((7/358)*log(7/358))+((4/358)*log(4/358))+((2/358)*log(2/358))+((2/358)*log(2/358))+((1/358)*log(1/358))+((9/358)*log(9/358))+((1/358)*log(1/358))+((1/358)*log(1/358))+((1/358)*log(1/358))+((23/358)*log(23/358))+((38/358)*log(38/358))+((2/358)*log(2/358))+((30/358)*log(30/358))+((40/358)*log(40/358))+((24/358)*log(24/358))+((6/358)*log(6/358))+((6/358)*log(6/358)))
+
+Hvector<-c(InexH,ExpH)
+
+barplot(Hvector, main="Cars", xlab="Lot",  
+   ylab="Total", names.arg=c("Inexpensive","Expensive"), 
+   border="blue", density=c(10,20),ylim=c(0,4))
+# here I used base R, outlined the bars, and filled them with lines
+```
+
+
+So down to the Type level (species) there is more diversity in the expensive lot than in the inexpensive lot!
+
+
+
+
+
+
+You just lost the game... return to line 40
