@@ -1,3 +1,5 @@
+“The code is more what you'd call 'guidelines' than actual rules.” – Barbossa, Pirates of the Caribbean 🏴‍☠️
+
 # R homework assignment rules
 ## Here I'm going to list some (loose) rules for the R homeworks. Think of it more as a guide. 
 ### 1. Don't let yourself get overwhelmed. If I can do it, you can do it. I promise. 
